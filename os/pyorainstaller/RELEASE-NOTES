@@ -1,0 +1,6 @@
+pyorainstaller-0.1-alpha
+14.07.2008
+
+* This is the first release.
+* Tested only on a RHEL5, x386 machine.
+* Needs some testing, cleaning-up the code, comment, and the exception handling. But it now works for a normal RHEL5.

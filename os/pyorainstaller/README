@@ -1,0 +1,24 @@
+pyorainstaller is a Python script which automates the installation process of an Oracle 10g Enterprise Database Server. 
+
+Manual requirements
+-------------------
+0. compat-libstdc++-8-3.3.4.2.i386.rpm libXp-1.0.0-2.2.i386.rpm packages should have been installed.
+1. The 10201_database_linux32.zip setup file should be in a place you prefer where oracle user has the read rights. You have to specify the path on ZIP_FILE_PATH key in the config.py file.
+
+2. Check the config.py file and modify it, if you need to do so.
+3. Make sure that you have the gcc, make, binutils and such developer tools installed. You also may want to install the packages in the packages dir manually, before the pre-configuration.
+
+
+Usage:
+
+	python pyorainstaller.py --pre-configuration
+
+It will do the pre-configuration for you, unzip the zip file and start the installation dialog.
+
+After following the Assistant and doing all the stuff, make your Oracle instance to autostart at system startups with:
+
+	python pyorainstaller.py --post-configuration
+
+
+You may learn more about the command line parameters with:
+	python pyorainstaller.py

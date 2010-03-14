@@ -1,0 +1,12 @@
+Information about the Rollback process
+1. Restore the release 
+2. Delete USER_ORACLE, GROUP_OINSTALL, GROUP_DBA
+3. Delete -rf ORACLE_BASE
+4. Restore the /etc/sysctl.conf
+5. Restore /etc/security/limits.conf
+6. Restore /etc/pam.d/login
+7. Restore /etc/profile
+8. Restore /etc/csh.login
+9. Restore /etc/rc.d/rc.local
+10. rmmod hangcheck-timer
+11. Restore /home/USER_ORACLE/.bash_profile
