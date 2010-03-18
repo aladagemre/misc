@@ -36,7 +36,7 @@ public class Fractal {
                     z = f1(z);
                 }
 
-                matrix[x][y] = i*5;                
+                matrix[x][y] = i*5;
             }
         }
         
@@ -56,8 +56,8 @@ public class Fractal {
     }
 
     public static void main(String[] args) {
-        Fractal f = new Fractal();
-        f.printMatrix();
+        //Fractal f = new Fractal();
+        //f.printMatrix();
         
     }
 

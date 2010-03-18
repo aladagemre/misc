@@ -42,6 +42,7 @@ public class Complex {
     public double norm(){
         return Math.sqrt(re*re + im*im);
     }
+    
     // return a string representation of the invoking Complex object
     public String toString() {
         if (im == 0) return re + "";
