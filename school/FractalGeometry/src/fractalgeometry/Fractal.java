@@ -21,6 +21,23 @@ public class Fractal {
         return z.times(z).plus(c);
     }
 
+    private Complex f2(Complex z){
+        return z.times(z).times(z).minus(c);
+    }
+
+    private Complex f3(Complex z){
+        //(Z^2 + C) / (Z - C)
+        return z.times(z).plus(c).divides((z.minus(c)));
+    }
+
+    private Complex f4(Complex z){
+        return z.times(z).minus(z).plus(c);
+    }
+
+    private Complex f5(Complex z){
+        return z.times(z).times(z).minus(z.times(z)).plus(z).plus(c);
+    }
+
     private void calculateImage(){
         int i;
         for (int x=0; x<SIZE; x++){
@@ -29,17 +46,16 @@ public class Fractal {
                 double im = (y * 2.0 / SIZE) - 1.0;
 
                 Complex z = new Complex(re, im);
-
+                
                 for (i=0; i<256; i++){
                     if (z.norm() > 2.0)
                         break;
-                    z = f1(z);
+                    z = f1(z);   
                 }
-
+                
                 matrix[x][y] = i*5;
             }
         }
-        
     }
 
     public void printMatrix(){
