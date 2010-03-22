@@ -1,6 +1,9 @@
+# WRITTEN BY NISHIO Hirokazu
+
 import Image
 import ImageDraw
 import os
+
 
 SIZE = 200
 image = Image.new("RGB", (SIZE, SIZE))
