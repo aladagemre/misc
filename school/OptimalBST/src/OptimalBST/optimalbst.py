@@ -33,9 +33,9 @@ class OptimalBST:
         self.q = q
 
         # Storage
-        self.root = {}      # root[i,j] will hold the optimal root for the range (i,j).
-        self.e = {}         # e[i,j] will hold the expected search cost of subtree in range (i,j)
-        self.w = {}         # w[i,j] = P+Q sums in range (i,j)
+        self.__root = {}      # root[i,j] will hold the optimal root for the range (i,j).
+        self.__e = {}         # e[i,j] will hold the expected search cost of subtree in range (i,j)
+        self.__w = {}         # w[i,j] = P+Q sums in range (i,j)
 
         p.insert(0, 0)      # We will use index 1 as starting point for list p.
 
@@ -47,9 +47,12 @@ class OptimalBST:
         """Finds the Optimal BST by minimizing the expected search cost.
         Uses dynamic programming."""
         # Shortcuts
-        root = self.root
-        e = self.e
-        w = self.w        
+        root = self.__root
+        e = self.__e
+        w = self.__w
+        n = self.n
+        q = self.q
+        p = self.p
         
         for i in irange(1, n + 1):
             e[i, i-1] = q[i-1]
@@ -70,7 +73,7 @@ class OptimalBST:
 
     def get_root(self, start, end):
         """Returns the optimal root calculated for the range (start,end)."""
-        return self.root[start, end]
+        return self.__root[start, end]
     
     def construct_subtree(self, start, end):
         """Constructs a subtree for the range (start,end) and returns
@@ -101,7 +104,29 @@ class OptimalBST:
     def construct_tree(self):
         """Constructs the Optimal BST. Starts with the rood node (which is recursive)."""
         self.root_node = self.construct_subtree(1, self.n)
-        
+
+    def get_node(self, key, root=None):
+        """Returns the node with the given key. If can't find, returns the dummy node."""
+        if not root:
+            root = self.root_node
+
+        # If we reach a dummy node, return it. No need to search anymore.
+        # This is the one of the base cases.
+        if isinstance(root, DummyNode):
+            return root
+
+        # If we reach the real node we look for, return it.
+        # This is the second of the base cases.
+        if root.key == key:
+            return root
+
+        # If the key we look for is smaller than the current node,
+        # Look for the key in the left subtree
+        elif key < root.key:
+            return self.get_node(key, root.left)
+        # If the key is greater, look in the right subtree.
+        else:
+            return self.get_node(key, root.right)
         
 if __name__ == "__main__":
     tree = OptimalBST(p=[0.15,0.10,0.05,0.10,0.20], q=[0.05,0.10,0.05,0.05,0.05,0.10], n=5)
