@@ -160,7 +160,33 @@ class OptimalBST:
         else:
             return self.get_node_by_custom_key(custom_key, root.right)
         
+    def generate_image(self, filename="obst.png"):
+        """Generates a tree image using graphviz."""
+        from pygraphviz import AGraph
+
+        G=AGraph(strict=False,directed=True)    # Create a graph
+        root = self.root_node                   # Use root as shortcut
+        G.add_node(root)                        # Add the root to graph
         
+        self.__add_subtrees(G, root)            # Add the subtrees of root
+        
+        G.layout('dot')                         # Set hierarchical layout
+        G.draw(filename)                        # Save the image.
+        
+    def __add_subtrees(self, G, root):
+        """Adds the subtrees of the given root node to the graph G."""
+        if isinstance(root, DummyNode):         # If dummy, do nothing.
+            return
+        G.add_node(root.left)                   # Add left child
+        G.add_node(root.right)                  # Add right child
+        
+        G.add_edge(root, root.left)             # Add edge to left child
+        G.add_edge(root, root.right)            # Add edge to right child
+
+        self.__add_subtrees(G, root.left)       # Add left subtree
+        self.__add_subtrees(G, root.right)      # Add right subtree
+        
+
 if __name__ == "__main__":
     tree = OptimalBST(
         p=[0.15,0.10,0.05,0.10,0.20],
@@ -173,3 +199,5 @@ if __name__ == "__main__":
 
     for ck in ["Alen", "Ahmet", "Caner","Cemil", "Emre","Mehmet","Volkan","Zeynep", "Züleyha"]:
         print "Looking for %s: %s" %( ck,  tree.get_node_by_custom_key(ck) )
+
+    tree.generate_image()
