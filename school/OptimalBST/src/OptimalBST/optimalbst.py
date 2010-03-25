@@ -1,3 +1,55 @@
+#-*-encoding:utf-8-*-
+class MyOptimalBST:
+    def __init__(self, p): # q):
+        self.p = p
+        #self.q = q
+        self.psum = {}
+        self.c = {}
+        self.n = len(p)
+
+        self.fill_psum()
+        self.fill_diagonal()
+        
+    def fill_psum(self):
+        for i in xrange(self.n): # Row
+            rowsum = 0
+            for j in xrange(i, self.n): # column
+                rowsum += self.p[j]
+                self.psum[(i, j)] = rowsum
+                #print rowsum,
+            #print
+
+    def fill_diagonal(self):
+        for i in xrange(self.n):
+            self.c[(i,i)] = self.p[i]
+            
+
+    def displayAsMatrix(self, dictionary):
+        for row in xrange(self.n):
+            for col in xrange(self.n):
+                value = dictionary.get((row,col))
+                if value:
+                    print "%4s\t" % value,
+                else:
+                    print "%4s\t" % "",
+            print
+                
+                    
+    def calculate_costs(self):
+        min_cost = float("inf")
+
+        for s in xrange(self.n-1, -1, -1):
+            for t in xrange(s+1, self.n):
+                for k in xrange(s+1, t):
+                    current_cost = self.c[s,k-1] + self.c[k+1,t] + self.psum[s,t]
+                    self.c[s,t] = current_cost
+                    print self.displayAsMatrix(self.c)
+                    print "c[%d,%d] = c[%d, %d] + c[%d, %d] + psum[%d,%d] = %f + %f + %f = %f" % (s,t, s,k-1,k+1,t,s,t, self.c[s,k-1], self.c[k+1,t],self.psum[s,t], current_cost)
+                    if current_cost < min_cost:
+                        min_cost = current_cost
+                
+
+
 class OptimalBST:
     
     def __init__(self, p, q, n):
@@ -81,4 +133,9 @@ class OptimalBST:
 
 
 if __name__ == "__main__":
-    obst = OptimalBST([0.25, 0.25, 0.25, 0.25], [0.25, 0.25, 0.25, 0.25], 4)
+    obst = MyOptimalBST([0.25, 0.25, 0.25, 0.25])#, [0.25, 0.25, 0.25, 0.25], 4)
+    #obst.fill_psum()
+    #print obst.psum
+    #obst.displayAsMatrix(obst.psum)
+    #obst.displayAsMatrix(obst.c)
+    obst.calculate_costs()
