@@ -120,3 +120,23 @@ class OptimalBST:
 
 
 """
+
+class OptimalCLSR:
+    def sort_custom_keys(self):
+        """Sorts custom keys and their probabilities accordingly.
+        This method is useless."""
+        # If no custom keys provided, exit.
+        if not self.custom_keys:
+            return
+        # If custom keys are sorted, exit.
+        if sorted(self.custom_keys) == self.custom_keys:
+            return
+
+        temp_dict = {}
+        for (index, ck) in enumerate(self.custom_keys):
+            temp_dict[ck] = self.p[index], self.q[index]
+
+        for (index, value) in enumerate(sorted(temp_dict.keys())):
+            self.custom_keys[index] = temp_dict[value]
+            self.p[index+1] = value[0]
+            self.q[index] = value[1] # q has 1 more element. Can't handle it.
