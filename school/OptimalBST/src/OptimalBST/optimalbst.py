@@ -1,141 +1,107 @@
 #-*-encoding:utf-8-*-
-class MyOptimalBST:
-    def __init__(self, p): # q):
-        self.p = p
-        #self.q = q
-        self.psum = {}
-        self.c = {}
-        self.n = len(p)
+# AHMET EMRE ALADAG © 2010
+# Implementation of Optimal BST in CLSR Algorithms Book with Python.
 
-        self.fill_psum()
-        self.fill_diagonal()
+irange = lambda x,y,z=1: xrange(x,y+1,z)
+
+class Node:
+    def __init__(self, key, left=None, right=None):
+        self.key = key
+        self.left = left
+        self.right = right
         
-    def fill_psum(self):
-        for i in xrange(self.n): # Row
-            rowsum = 0
-            for j in xrange(i, self.n): # column
-                rowsum += self.p[j]
-                self.psum[(i, j)] = rowsum
-                #print rowsum,
-            #print
+    def __repr__(self):
+        return "k%s" % self.key # < %s, %s >" % (self.key, self.left, self.right)
 
-    def fill_diagonal(self):
-        for i in xrange(self.n):
-            self.c[(i,i)] = self.p[i]
-            
-
-    def displayAsMatrix(self, dictionary):
-        for row in xrange(self.n):
-            for col in xrange(self.n):
-                value = dictionary.get((row,col))
-                if value:
-                    print "%4s\t" % value,
-                else:
-                    print "%4s\t" % "",
-            print
-                
-                    
-    def calculate_costs(self):
-        min_cost = float("inf")
-
-        for s in xrange(self.n-1, -1, -1):
-            for t in xrange(s+1, self.n):
-                for k in xrange(s+1, t):
-                    current_cost = self.c[s,k-1] + self.c[k+1,t] + self.psum[s,t]
-                    self.c[s,t] = current_cost
-                    print self.displayAsMatrix(self.c)
-                    print "c[%d,%d] = c[%d, %d] + c[%d, %d] + psum[%d,%d] = %f + %f + %f = %f" % (s,t, s,k-1,k+1,t,s,t, self.c[s,k-1], self.c[k+1,t],self.psum[s,t], current_cost)
-                    if current_cost < min_cost:
-                        min_cost = current_cost
-                
-
-
-class OptimalBST:
+class DummyNode:
+    def __init__(self, key):
+        self.key = key
+    def __repr__(self):
+        return "d%s" % self.key
     
+class OptimalBST:
+    """<Cormen Leiserson Rivest Stein> Algorithms book Optimal BST implementation"""
     def __init__(self, p, q, n):
+        """
+        p is the list of probabilities for each real key to be searched.
+        q is the list of probabilities for key intervals that do not exist in the tree.
+        n is the number of keys.
+        """
+        # Parameters to attributes
+        self.n  = n
         self.p = p
         self.q = q
-        self.n = n
-        self.e = {}
-        self.root = {}
-        self.w = {}
-        self.Leftson = Leftson = {}
-        self.Rightson = Rightson = {}
-        self.c = c = {}
-        self.r = r = {}
-        self.w = w = {}
 
-        for i in xrange(0,n):
-            w[i,i] = q[i]
-            c[i,i] = 0
-            r[i,i] = 0
-        for length in xrange(1, n):
-            for i in xrange(0, n-length):
-                j = i+length
-                w[i,j] = w[i,j-1] + p[j] + q[j]
-                if length == 1:
-                    m = j
-                else:
-                    minimum = float("inf")
-                    for k in xrange(r[i,j-1], r[i+1,j]+1):
-                        value = c[i,k-1] + c[k,j]
-                        if value < minimum:
-                            minimum = value
-                            kvalue = k
-                    m = kvalue
+        # Storage
+        self.root = {}      # root[i,j] will hold the optimal root for the range (i,j).
+        self.e = {}         # e[i,j] will hold the expected search cost of subtree in range (i,j)
+        self.w = {}         # w[i,j] = P+Q sums in range (i,j)
 
-                c[i,j] = w[i,j] + c[i,m-1] + c[m,j]
-                r[i,j] = m
-                Leftson[r[i,j]] = r[i,m-1]
-                Rightson[r[i,j]] = r[m,j]
+        p.insert(0, 0)      # We will use index 1 as starting point for list p.
 
-"""
-    # Pseudocode in http://www.ics.uci.edu/~dan/class/165/notes/OptBST.html
-    for i := 0 to n do
-       wi,i := qi
-       ci,i := 0
-       ri,i := 0
-    for length := 1 to n do
-       for i := 0 to n-length do
-          j := i + length
-          wi,j := wi,j-1 + pj + qj
-          if length=1 then
-             m := j
-          else
-             m := value of k (with ri,j-1 ≤ k ≤ ri+1,j) which minimizes (ci,k-1+ck,j)
-
-          ci,j := wi,j + ci,m-1 + cm,j
-          ri,j := m
-          Leftson(ri,j) := ri,m-1
-          Rightson(ri,j) := rm,j
-
-
-
-        # ALGORITHMS BOOK IMPLEMENTATION
-        e = self.e
-        w = self.w
-        root = self.root
+        # OPERATIONS
+        self.find_optimal()
+        self.construct_tree()
         
-        for i in range(1, self.n + 1):
+    def find_optimal(self):
+        """Finds the Optimal BST by minimizing the expected search cost.
+        Uses dynamic programming."""
+        # Shortcuts
+        root = self.root
+        e = self.e
+        w = self.w        
+        
+        for i in irange(1, n + 1):
             e[i, i-1] = q[i-1]
             w[i, i-1] = q[i-1]
-        for l in range(1, n+1):
-            for i in range(1, n-l+2):
+        for l in irange(1, n):
+            for i in irange(1, n - l + 1):
                 j = i + l - 1
                 e[i,j] = float("inf")
-                print i,j
                 w[i,j] = w[i, j-1] + p[j] + q[j]
-                for r in range(i, j+1):
+
+                for r in irange(i, j):
                     t = e[i, r-1] + e[r+1, j] + w[i,j]
                     if t < e[i,j]:
                         e[i,j] = t
-                        root[i,j] = r"""
+                        root[i,j] = r
 
+        self.construct_tree()
 
+    def get_root(self, start, end):
+        """Returns the optimal root calculated for the range (start,end)."""
+        return self.root[start, end]
+    
+    def construct_subtree(self, start, end):
+        """Constructs a subtree for the range (start,end) and returns
+        the root of this subtree."""
+
+        if end < start:
+            # If boundaries pass each other, means no more search.
+            return None
+        
+        root_index = self.get_root(start, end)  # Get the optimal root key.
+        node = Node(root_index)                 # Create the root node.
+
+        # Assign left and right node by constructing 2 more subtrees.
+        node.left = self.construct_subtree(start, root_index - 1)
+        node.right = self.construct_subtree(root_index + 1, end)
+
+        # If no child exists, put a dummy node there.
+        if node.left == None:
+            node.left = DummyNode(root_index-1)
+        if node.right == None:
+            node.right = DummyNode(root_index)
+
+        #print "%s - < %s , %s >" % (node, node.left, node.right)
+
+        # Return the root of this subtree.
+        return node
+
+    def construct_tree(self):
+        """Constructs the Optimal BST. Starts with the rood node (which is recursive)."""
+        self.root_node = self.construct_subtree(1, self.n)
+        
+        
 if __name__ == "__main__":
-    obst = MyOptimalBST([0.25, 0.25, 0.25, 0.25])#, [0.25, 0.25, 0.25, 0.25], 4)
-    #obst.fill_psum()
-    #print obst.psum
-    #obst.displayAsMatrix(obst.psum)
-    #obst.displayAsMatrix(obst.c)
-    obst.calculate_costs()
+    tree = OptimalBST(p=[0.15,0.10,0.05,0.10,0.20], q=[0.05,0.10,0.05,0.05,0.05,0.10], n=5)
