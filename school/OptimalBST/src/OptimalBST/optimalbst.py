@@ -80,11 +80,11 @@ class OptimalBST:
 
         self.construct_tree()
 
-    def get_root(self, start, end):
+    def __get_root(self, start, end):
         """Returns the optimal root calculated for the range (start,end)."""
         return self.__root[start, end]
     
-    def construct_subtree(self, start, end):
+    def __construct_subtree(self, start, end):
         """Constructs a subtree for the range (start,end) and returns
         the root of this subtree."""
 
@@ -92,14 +92,14 @@ class OptimalBST:
             # If boundaries pass each other, means no more search.
             return None
         
-        root_index = self.get_root(start, end)  # Get the optimal root key.
+        root_index = self.__get_root(start, end)  # Get the optimal root key.
         node = Node(root_index)                 # Create the root node.
         if self.custom_keys:
             node.custom_key = self.custom_keys[root_index]
 
         # Assign left and right node by constructing 2 more subtrees.
-        node.left = self.construct_subtree(start, root_index - 1)
-        node.right = self.construct_subtree(root_index + 1, end)
+        node.left = self.__construct_subtree(start, root_index - 1)
+        node.right = self.__construct_subtree(root_index + 1, end)
 
         # If no child exists, put a dummy node there.
         if node.left == None:
@@ -114,7 +114,7 @@ class OptimalBST:
 
     def construct_tree(self):
         """Constructs the Optimal BST. Starts with the rood node (which is recursive)."""
-        self.root_node = self.construct_subtree(1, self.n)
+        self.root_node = self.__construct_subtree(1, self.n)
 
     def get_node_by_index(self, key, root=None):
         """Returns the node with the given key. If can't find, returns the dummy node."""
@@ -227,4 +227,5 @@ if __name__ == "__main__":
     for ck in ["Alen", "Ahmet", "Caner","Cemil", "Emre","Mehmet","Volkan","Zeynep", "Züleyha"]:
         print "Looking for %s: %s" %( ck,  tree.get_node_by_custom_key(ck) )
 
-    tree.render_online("online.png")
+    #tree.render_online("online.png")
+    tree.render_local("offline.png")
