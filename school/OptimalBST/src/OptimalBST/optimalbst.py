@@ -2,6 +2,7 @@
 # AHMET EMRE ALADAG © 2010
 # Implementation of Optimal BST in CLSR Algorithms Book with Python.
 
+# A shortcut for inclusive range function: [x,y]
 irange = lambda x,y,z=1: xrange(x,y+1,z)
 
 class Node:
@@ -159,33 +160,59 @@ class OptimalBST:
         # If the key is greater, look in the right subtree.
         else:
             return self.get_node_by_custom_key(custom_key, root.right)
-        
-    def generate_image(self, filename="obst.png"):
-        """Generates a tree image using graphviz."""
-        from pygraphviz import AGraph
 
-        G=AGraph(strict=False,directed=True)    # Create a graph
-        root = self.root_node                   # Use root as shortcut
-        G.add_node(root)                        # Add the root to graph
-        
-        self.__add_subtrees(G, root)            # Add the subtrees of root
-        
-        G.layout('dot')                         # Set hierarchical layout
-        G.draw(filename)                        # Save the image.
-        
-    def __add_subtrees(self, G, root):
+    def __add_subtrees(self, node_list, edge_list, root):
         """Adds the subtrees of the given root node to the graph G."""
         if isinstance(root, DummyNode):         # If dummy, do nothing.
             return
-        G.add_node(root.left)                   # Add left child
-        G.add_node(root.right)                  # Add right child
-        
-        G.add_edge(root, root.left)             # Add edge to left child
-        G.add_edge(root, root.right)            # Add edge to right child
+        node_list.append(root.left.__repr__())                   # Add left child
+        node_list.append(root.right.__repr__())                  # Add right child
 
-        self.__add_subtrees(G, root.left)       # Add left subtree
-        self.__add_subtrees(G, root.right)      # Add right subtree
+        edge_list.append( (root.__repr__(), root.left.__repr__()) )           # Add edge to left child
+        edge_list.append( (root.__repr__(), root.right.__repr__()) )          # Add edge to right child
+
+        self.__add_subtrees(node_list, edge_list, root.left)       # Add left subtree
+        self.__add_subtrees(node_list, edge_list, root.right)      # Add right subtree
+
+    def __generate_image(self):
+        """Generates node and edge lists to prepare materials for graph construction."""
+        root = self.root_node                   # Use root as shortcut
+        node_list = [ root.__repr__() ]                    # Add the root to graph
+        edge_list = [ ]
+        #G.add_node(root)
+
+        # Add the subtrees of root
+        self.__add_subtrees(node_list, edge_list, root)
+
+        return node_list, edge_list
         
+    def render_local(self, filename):
+        """Renders the OBST image locally using pygraphviz."""
+        # Get the graph information
+        node_list, edge_list = self.__generate_image()
+        # Generate the graph
+        from pygraphviz import AGraph
+        G=AGraph(strict=False,directed=True)    # Create a graph
+        for node in node_list:
+            G.add_node(node)
+        for edge in edge_list:
+            G.add_edge(edge[0], edge[1])        
+        G.layout('dot')                         # Set hierarchical layout
+        G.draw(filename)                        # Save the image.
+
+    def render_online(self, filename):
+        """Renders the OBST image locally using RPC."""
+        # Get the graph information
+        node_list, edge_list = self.__generate_image()
+        print node_list, edge_list
+        # Call RPC
+        import xmlrpclib
+
+        proxy = xmlrpclib.ServerProxy("http://173.45.226.3:998/")
+        with open(filename, "wb") as handle:
+            handle.write(proxy.render_image(node_list, edge_list).data)
+
+    
 
 if __name__ == "__main__":
     tree = OptimalBST(
@@ -200,4 +227,4 @@ if __name__ == "__main__":
     for ck in ["Alen", "Ahmet", "Caner","Cemil", "Emre","Mehmet","Volkan","Zeynep", "Züleyha"]:
         print "Looking for %s: %s" %( ck,  tree.get_node_by_custom_key(ck) )
 
-    tree.generate_image()
+    tree.render_online("online.png")
