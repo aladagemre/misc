@@ -207,8 +207,8 @@ class OptimalBST:
         print node_list, edge_list
         # Call RPC
         import xmlrpclib
-
-        proxy = xmlrpclib.ServerProxy("http://173.45.226.3:998/")
+        port = 1000 - 2
+        proxy = xmlrpclib.ServerProxy("http://www.remziduzagac.com:" + str(port))
         with open(filename, "wb") as handle:
             handle.write(proxy.render_image(node_list, edge_list).data)
 
@@ -227,5 +227,5 @@ if __name__ == "__main__":
     for ck in ["Alen", "Ahmet", "Caner","Cemil", "Emre","Mehmet","Volkan","Zeynep", "Züleyha"]:
         print "Looking for %s: %s" %( ck,  tree.get_node_by_custom_key(ck) )
 
-    #tree.render_online("online.png")
-    tree.render_local("offline.png")
+    tree.render_online("online.png")
+    #tree.render_local("offline.png")

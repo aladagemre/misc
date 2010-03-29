@@ -23,7 +23,8 @@ def render_image(node_list, edge_list):
         with open(filename, "rb") as handle:
          return xmlrpclib.Binary(handle.read())
 
-server = SimpleXMLRPCServer(("localhost", 8000))
-print "Listening on port 8000..."
+port = 1000 - 2
+server = SimpleXMLRPCServer(("localhost", port))
+print "Listening on port %d..." % port
 server.register_function(render_image, "render_image")
 server.serve_forever()
