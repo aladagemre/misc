@@ -23,7 +23,7 @@ class DummyNode:
     
 class OptimalBST:
     """<Cormen Leiserson Rivest Stein> Algorithms book Optimal BST implementation"""
-    def __init__(self, p, q, n, custom_keys=None):
+    def __init__(self, p=None, q=None, n=None, custom_keys=None, filename=None):
         """
         p is the list of probabilities for each real key to be searched.
         q is the list of probabilities for key intervals that do not exist in the tree.
@@ -36,14 +36,17 @@ class OptimalBST:
         self.q = q
         self.custom_keys = custom_keys
 
+        if filename:
+            self.read_from_file(filename)
+
         # Storage
         self.__root = {}      # root[i,j] will hold the optimal root for the range (i,j).
         self.__e = {}         # e[i,j] will hold the expected search cost of subtree in range (i,j)
         self.__w = {}         # w[i,j] = P+Q sums in range (i,j)
 
-        p.insert(0, 0)          # We will use index 1 as starting point for list p.
-        if custom_keys:         # If we have custom keys, start them from the index 1.
-            custom_keys.insert(0, None)
+        self.p.insert(0, 0)          # We will use index 1 as starting point for list p.
+        if self.custom_keys:         # If we have custom keys, start them from the index 1.
+            self.custom_keys.insert(0, None)
 
         # OPERATIONS
         self.find_optimal()     # Calculate the search cost table.
@@ -213,13 +216,30 @@ class OptimalBST:
             handle.write(proxy.render_image(node_list, edge_list).data)
 
     
-
+    def read_from_file(self, filename):
+        """Reads the probabilities and keynames from a file."""
+        f = open(filename)
+        self.q = []
+        self.p = []
+        self.custom_keys = []
+        first_q = float(f.readline().strip())
+        self.q.append(first_q)
+        for line in f:
+            q, p, ck = line.strip().split("\t")
+            self.q.append(float(q))
+            self.p.append(float(p))
+            self.custom_keys.append(ck)
+        self.n = len(self.p)
+        f.close()
+            
 if __name__ == "__main__":
-    tree = OptimalBST(
+    """tree = OptimalBST(
         p=[0.15,0.10,0.05,0.10,0.20],
         q=[0.05,0.10,0.05,0.05,0.05,0.10],
         n=5,
-        custom_keys=["Ahmet", "Caner", "Emre","Volkan","Zeynep"])
+        custom_keys=["Ahmet", "Caner", "Emre","Volkan","Zeynep"])"""
+
+    tree = OptimalBST(None, None, None, None, filename="input.txt")
 
     for i in range(5):
         print "Looking for Key %d: %s" %( i,  tree.get_node_by_index(i) )
@@ -227,5 +247,5 @@ if __name__ == "__main__":
     for ck in ["Alen", "Ahmet", "Caner","Cemil", "Emre","Mehmet","Volkan","Zeynep", "Züleyha"]:
         print "Looking for %s: %s" %( ck,  tree.get_node_by_custom_key(ck) )
 
-    tree.render_online("online.png")
-    #tree.render_local("offline.png")
+    #tree.render_online("online.png")
+    tree.render_local("offline.png")
