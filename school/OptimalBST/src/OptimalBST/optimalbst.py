@@ -12,8 +12,8 @@ class Node:
         self.custom_key = None
         
     def __repr__(self):
-        return "k%s - %s" % (self.key, self.custom_key)
-
+        #return "k%s - %s" % (self.key, self.custom_key)
+        return "%s" % self.custom_key
 class DummyNode:
     """Dummy node class, used as a substitute for searched items that do not exist."""
     def __init__(self, key):
@@ -48,9 +48,15 @@ class OptimalBST:
         if self.custom_keys:         # If we have custom keys, start them from the index 1.
             self.custom_keys.insert(0, None)
 
-        # OPERATIONS
+
+        """# OPERATIONS
+        print "Finding the optimal roots"
         self.find_optimal()     # Calculate the search cost table.
+        
+        print "Constructing tree"
         self.construct_tree()   # Construct the tree according to the search cost table.
+        print "Finished."
+        """
             
 
 
@@ -195,7 +201,7 @@ class OptimalBST:
         node_list, edge_list = self.__generate_image()
         # Generate the graph
         from pygraphviz import AGraph
-        G=AGraph(strict=False,directed=True)    # Create a graph
+        G=AGraph(strict=True,directed=True)    # Create a graph
         for node in node_list:
             G.add_node(node)
         for edge in edge_list:
@@ -240,6 +246,8 @@ if __name__ == "__main__":
         custom_keys=["Ahmet", "Caner", "Emre","Volkan","Zeynep"])"""
 
     tree = OptimalBST(None, None, None, None, filename="input.txt")
+    tree.find_optimal()
+    tree.construct_tree()
 
     for i in range(5):
         print "Looking for Key %d: %s" %( i,  tree.get_node_by_index(i) )
