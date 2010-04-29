@@ -60,7 +60,6 @@ class OptimalBST:
             
 
 
-
     def find_optimal(self):
         """Finds the Optimal BST by minimizing the expected search cost.
         Uses dynamic programming."""
