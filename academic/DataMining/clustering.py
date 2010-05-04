@@ -3,7 +3,7 @@ from math import sqrt
 class Data:
     def __init__(self, value):
         self.value = value
-    
+        
     def __sub__(self, other):
         if isinstance(other, Cluster):
             return other - self
@@ -76,11 +76,34 @@ class Cluster:
         else:
             # Unknown?
             print "Unexpected subtraction."
+            
+    def __distance_average(self, other):
+        dist_list = []        
+        if isinstance(other, Cluster):
+            # Subtract Cluster - Cluster for Single Linkage
+            for element in self.elements:
+                for other_element in other.elements:
+                    value = element - other_element
+                    dist_list.append(value)
+            
+            return sum(dist_list) / float(len(dist_list))
+        
+        elif isinstance(other, Data):
+            # Subtract Cluster - Data
+            for element in self.elements:
+                value = element - other
+                diff_list.append(value)
+                
+            return sum(dist_list) / float(len(dist_list))
+        else:
+            # Unknown?
+            print "Unexpected subtraction."
         
     def __sub__(self, other):
         """Calculates distance between two clusters."""
         method_dict = {'single' : self.__distance_single,
-                       'complete': self.__distance_complete, }
+                       'complete': self.__distance_complete,
+                       'average': self.__distance_average, }
         
         return method_dict[self.linkage_type](other)
     
@@ -219,34 +242,57 @@ class HierarchicalClustering:
         else:
             return False
     
-soru2data = ( 
-( 40.330, 40.218, 151.0, 54.4, 40.330, 9.077, 0.0, 628.0 ),
-( 0.89, 40.247, 202.0, 57.9, 40.211, 5.088, 40.262, 1.555 ),
-( 15.707, 40.283, 113.0, 53.0, 40.271, 9.212, 0.0, 1.058 ),
-( 40.210, 40.220, 168.0, 56.0, 0.3, 6.423, 34.3, 700.0 ),
-( 17.899, 40.398, 192.0, 51.2, 36.526, 3.300, 40.344, 2.044 ),
-( 11.689, 40.311, 111.0, 60.0, -2.2, 11.127, 40.320, 1.241 ),
-( 44.562, 40.221, 175.0, 67.6, 40.211, 7.642, 0.0, 1.652 ),
-( 40.452, 40.218, 245.0, 57.0, 40.240, 13.082, 0.0, 309.0 ),
-( 12.420, 13.0, 168.0, 60.4, 40.216, 8.406, 0.0, 862.0 ),
-( 40.513, 40.280, 197.0, 53.0, 40.361, 6.455, 39.2, 623.0 ),
-( 0.75, 40.305, 173.0, 51.5, 40.304, 17.441, 0.0, 768.0 ),
-( 41.275, 40.431, 178.0, 62.0, 40.362, 6.154, 0.0, 1.897 ),
-( 42.005, 40.371, 199.0, 53.7, 40.274, 7.179, 50.2, 527.0 ),
-( 40.422, 36.861, 96.0, 49.8, 40.269, 9.673, 0.0, 588.0 ),
-( 0.96, 40.336, 164.0, 62.2, -0.1, 6.468, 0.9, 1.400 ),
-( 42.370, 40.430, 252.0, 56.0, 40.218, 15.991, 0.0, 620.0 ),
-( 0.76, 40.274, 136.0, 61.9, 36.770, 5.714, 40.245, 1.920 ),
-( 40.299, 40.341, 150.0, 56.7, 40.361, 10.140, 0.0, 1.108 ),
-( 42.370, 40.370, 104.0, 54.0, -2.1, 13.507, 0.0, 636.0 ),
-( 43.831, 40.401, 148.0, 59.9, 40.301, 7.287, 41.1, 702.0 ),
-( 40.269, 40.337, 204.0, 61.0, 40.301, 6.650, 0.0, 2.116 ),
-( 40.360, 40.246, 174.0, 54.3, 40.426, 10.093, 40.355, 1.306 ),
-)
+def normalize(data):
+    num_features = len(data[0])
+    num_samples = len(data)
+    
+    for feature in range(num_features):
+        # for each feature
+        values = []
+        for sample in range(num_samples):
+            # for each sample
+            values.append(data[sample][feature])
+        min_val = min(values)
+        max_val = max(values)
+        
+        for sample in range(num_samples):
+            # for each sample
+            value = data[sample][feature]
+            if max_val == min_val:
+                new_val = max_val
+            else:
+                new_val = float(value - min_val) / (max_val - min_val)
+            
+            data[sample][feature] = new_val
+        del values
+    return data
+             
+        
 
-hc = HierarchicalClustering("complete", "/home/emre/Desktop/odev2/soru2.m")
-hc.load_data(soru2data)
-hc.run()
+soru2data = [ 
+[ 40.330, 40.218, 151.0, 54.4, 40.330, 9.077, 0.0, 628.0 ],
+[ 0.89, 40.247, 202.0, 57.9, 40.211, 5.088, 40.262, 1.555 ],
+[ 15.707, 40.283, 113.0, 53.0, 40.271, 9.212, 0.0, 1.058 ],
+[ 40.210, 40.220, 168.0, 56.0, 0.3, 6.423, 34.3, 700.0 ],
+[ 17.899, 40.398, 192.0, 51.2, 36.526, 3.300, 40.344, 2.044 ],
+[ 11.689, 40.311, 111.0, 60.0, -2.2, 11.127, 40.320, 1.241 ],
+[ 44.562, 40.221, 175.0, 67.6, 40.211, 7.642, 0.0, 1.652 ],
+[ 40.452, 40.218, 245.0, 57.0, 40.240, 13.082, 0.0, 309.0 ],
+[ 12.420, 13.0, 168.0, 60.4, 40.216, 8.406, 0.0, 862.0 ],
+[ 40.513, 40.280, 197.0, 53.0, 40.361, 6.455, 39.2, 623.0 ],
+[ 0.75, 40.305, 173.0, 51.5, 40.304, 17.441, 0.0, 768.0 ],
+[ 41.275, 40.431, 178.0, 62.0, 40.362, 6.154, 0.0, 1.897 ],
+[ 42.005, 40.371, 199.0, 53.7, 40.274, 7.179, 50.2, 527.0 ],
+[ 40.422, 36.861, 96.0, 49.8, 40.269, 9.673, 0.0, 588.0 ],
+[ 0.96, 40.336, 164.0, 62.2, -0.1, 6.468, 0.9, 1.400 ],
+[ 42.370, 40.430, 252.0, 56.0, 40.218, 15.991, 0.0, 620.0 ],
+[ 0.76, 40.274, 136.0, 61.9, 36.770, 5.714, 40.245, 1.920 ],
+[ 40.299, 40.341, 150.0, 56.7, 40.361, 10.140, 0.0, 1.108 ],
+[ 42.370, 40.370, 104.0, 54.0, -2.1, 13.507, 0.0, 636.0 ],
+[ 43.831, 40.401, 148.0, 59.9, 40.301, 7.287, 41.1, 702.0 ],
+[ 40.269, 40.337, 204.0, 61.0, 40.301, 6.650, 0.0, 2.116 ],
+[ 40.360, 40.246, 174.0, 54.3, 40.426, 10.093, 40.355, 1.306 ],
+]
 
 
 soru1distmatrix = [ 
@@ -262,6 +308,16 @@ soru1distmatrix = [
 [9, 8, 8, 8, 9, 10, 10, 10, 10, 0, 8],
 [9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 0],
 ]
-hc = HierarchicalClustering("single", "/home/emre/Desktop/odev2/soru1.m")
-hc.load_distance_matrix(soru1distmatrix)
-hc.run()
+
+if __name__ == "__main__":
+    hc = HierarchicalClustering("single", "/home/emre/Desktop/soru1aa.m")
+    hc.load_distance_matrix(soru1distmatrix)
+    hc.run()
+    
+    hc = HierarchicalClustering("complete", "/home/emre/Desktop/soru1b.m")
+    hc.load_distance_matrix(soru1distmatrix)
+    hc.run()
+    
+    hc = HierarchicalClustering("average", "/home/emre/Desktop/soru2.m")
+    hc.load_data(normalize(soru2data))
+    hc.run()
