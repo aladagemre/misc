@@ -155,7 +155,10 @@ class HierarchicalClustering:
         while not_finished:
             step_num+=1
             if hasattr(self, 'matrix'):
-                not_finished = self.step_matrix()
+                if self.linkage_type == "single":
+                    not_finished = self.step_matrix()
+                else:
+                    not_finished = self.step_matrix3()
             else:
                 not_finished = self.step()
             
@@ -163,7 +166,61 @@ class HierarchicalClustering:
         self.output.write("dendrogram(dendmatrix);")
         self.output.close()
         print "Wrote to the file %s" % self.filename
-    
+
+    def step_matrix3(self):
+#        print "We have clusters:", self.clusters
+
+        min_val = float("inf")
+        for i in range(len(self.clusters)):
+            for j in range(i+1, len(self.clusters)):
+                ci = self.clusters[i]
+                cj = self.clusters[j]
+                
+#                print "Comparing C%d and C%d" % (ci.id, cj.id)
+                max_val = float("-inf")
+                for cie in ci.elements:
+                    for cje in cj.elements:
+                        
+                        # p is the id (index)
+                        if self.linkage_type == "complete":
+                            #print i,len(self.matrix), p-1, len(self.matrix[i])
+                            #if i == p-1: continue                        
+#                            print "d(%d, %d) = %f" % (cie-1, cje-1, self.matrix[cie-1][cje-1])
+                            
+                            if self.matrix[cie-1][cje-1] > max_val:
+                                max_val = self.matrix[cie-1][cje-1]
+                        elif self.linkage_type == "single":
+                            pass
+                        
+                # now we have the maximum distance to the cluster j from cluster i.
+                
+                diff = max_val    
+#                print "maximum of the distances:", diff
+                if diff <= min_val:
+                    min_val = diff
+                    clusters_to_merge = ci, cj
+#        print "minimum of maximums:", min_val
+#        print "==============================="
+        # now we know what to merge!
+        c1, c2 = clusters_to_merge
+        c_new = c1 + c2
+        c_new.id = self.last_cluster_id
+        self.last_cluster_id += 1
+#        print "Merging %d and %d at %0.4f;" % (c1.id, c2.id, min_val)
+        self.output.write( "%0.4f %0.4f %0.4f;" % (c1.id, c2.id, min_val) )
+        
+        # delete old ones
+        self.clusters.remove(c1)
+        self.clusters.remove(c2)
+        self.clusters.append(c_new)
+        #self.node_dict[x+1] = c_new
+        #self.node_dict[y+1] = c_new
+        
+#        print "We have clusters: ", self.clusters
+#        print "=============================="
+        return len(self.clusters) != 1
+        
+        
     def step_matrix(self):
 
         # Find what to merge
@@ -177,9 +234,14 @@ class HierarchicalClustering:
                     if self.matrix[i][j] < min_val:
                         min_val = self.matrix[i][j]
                         x, y = i, j
-                        
+                     
             # Merge
             self.matrix[x][y] = float("inf")
+            
+            if  self.node_dict[x+1] == self.node_dict[y+1]:
+                # If they are in the same cluster, pass.
+                continue
+            
             c1 = self.node_dict[x+1]
             c2 = self.node_dict[y+1]
         
@@ -309,15 +371,40 @@ soru1distmatrix = [
 [9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 0],
 ]
 
+test_data = ((0,2), (0,0), (1.5, 0), (5,0), (5,2) )
+test_matrix = [
+               [ 0.00 , 2.00 , 2.50, 5.39, 5.00],
+               [ 2.00 , 0.00 , 1.50, 5.00, 5.39],
+               [ 2.50 , 1.50 , 0.00, 3.50, 4.03],
+               [ 5.39 , 5.00 , 3.50, 0.00, 2.00],
+               [ 5.00 , 5.39 , 4.03, 2.00, 0.00]            
+               ]
+
+
+
+
+
 if __name__ == "__main__":
-    hc = HierarchicalClustering("single", "/home/emre/Desktop/soru1aa.m")
+        
+    hc = HierarchicalClustering("complete", "/home/emre/Desktop/soru1b.m")
     hc.load_distance_matrix(soru1distmatrix)
     hc.run()
     
-    hc = HierarchicalClustering("complete", "/home/emre/Desktop/soru1b.m")
+    hc = HierarchicalClustering("single", "/home/emre/Desktop/soru1a.m")
     hc.load_distance_matrix(soru1distmatrix)
     hc.run()
     
     hc = HierarchicalClustering("average", "/home/emre/Desktop/soru2.m")
     hc.load_data(normalize(soru2data))
     hc.run()
+    
+    
+    """print "X=["
+    for line in soru2data:
+        print " ".join(map(lambda x : "%0.4f" % x , line))
+    print "]"
+    
+    hc = HierarchicalClustering("complete", "/home/emre/Desktop/test.m")
+    hc.load_distance_matrix(test_matrix)
+    hc.run()"""
+ 
