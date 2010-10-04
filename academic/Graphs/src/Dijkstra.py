@@ -36,9 +36,11 @@ class Dijkstra:
     def get_path(self, target):
         print "From %d on the way to %d" % (self.s.id+1, target.id+1)
         current = target
+        path = []
         while hasattr(current, 'prev'):
-            print "Hopping: ", current.id+1
+            path.insert(0, current.id + 1)
             current = current.prev
+        print path
             
                     
 
