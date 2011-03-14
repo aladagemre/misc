@@ -1,0 +1,55 @@
+<table>
+<tr><th>Dil</th><th>n=3</th><th>n=10</th><th>n=20</th></tr>
+<tr><th>Python</th><td>0.016</td><td>0.020</td><td>8.027</td></tr>
+<tr><th>C</th><td>0.001</td><td>0.007</td><td>7.636</td></tr>
+<tr><th>Java</th><td>0.105</td><td>0.308</td><td>18.945</td></tr>
+</table>
+
+Python     0.016	0.020		8.027
+C	   0.001	0.007		7.636
+Java       0.105	0.308		18.945
+n=3
+
+real    0m0.047s    
+user    0m0.031s
+sys     0m0.007s
+
+real    0m0.006s
+user    0m0.001s
+sys     0m0.004s
+
+real    0m0.297s
+user    0m0.170s
+sys     0m0.038s
+
+
+n=10
+
+real    0m0.140s
+user    0m0.046s
+sys     0m0.021s
+
+real    0m0.058s
+user    0m0.003s
+sys     0m0.007s
+
+real    0m1.039s
+user    0m0.513s
+sys     0m0.082s
+
+
+
+n=20
+
+real    0m32.722s
+user    0m6.662s
+sys     0m2.082s
+
+real    0m26.002s
+user    0m1.039s
+sys     0m1.602s
+
+real    1m5.451s
+user    0m20.974s
+sys     0m11.322s
+
