@@ -1,8 +1,20 @@
 import os,random
 import itertools
 
-K=2
+K=3
 
+class CombinationCreator:
+	def __init__(self):
+		self.level1 = ["a","b"]
+		self.level2 = ["x","y"]
+		self.level3 = ["k","m"]
+		
+		self.combinations = []
+		for item1 in self.level1:
+			for item2 in self.level2:
+				for item3 in self.level3:
+					comb = Node( [item1, item2, item3], random.randint(0,100))
+					self.combinations.append( comb )
 		
 class Node:
 	def __init__(self, items=None, weight=None):
@@ -97,7 +109,20 @@ class Chandra:
 		new_graph = SetGraph()
 		new_graph.generate(list(I_))
 		new_graph.render_image("output2.png")
-		
+
+	def is_independent_set(self, perm):
+		cumulative_items = set() 
+		for i in range(len(perm)):
+			old_length = len(cumulative_items)
+			cumulative_items.update(*perm[i].items)
+			if len(cumulative_items) - old_length < K:
+				# repeating, we have intersection so its not independent
+				#print "dependent:", perm
+				return False
+		else:
+			print "independent:",perm
+			return True
+					
 	def improve(self):
 		I = list(self.I)
 		ratios = [] 
@@ -111,17 +136,9 @@ class Chandra:
 					# if grows < K, it means one of its items was already in the union.
 					# so it's not an independent set. break and move to another subset.
 					
-					cumulative_items = set() 
-					for i in range(len(perm)):
-						old_length = len(cumulative_items)
-						cumulative_items.update(*perm[i].items)
-						if len(cumulative_items) - old_length < K:
-							# repeating, we have intersection so its not independent
-							#print "dependent:", perm
-							break
-					else:
-						#print "independent:",perm
+					if self.is_independent_set(perm):
 						subsets.append( perm )
+						
 			print "Subets:"
 			for subset in subsets:
 				print subset
@@ -166,16 +183,18 @@ def happiness(table):
 	return abs(ord(table[0]) - ord(table[-1]))
 	
 def generate_graph():
-	nodes = []
+	"""nodes = []
 	for combination in itertools.combinations('abcdefg', r=K):
 		#weight = sum( [ord(l) for l in combination] ) / 495.0
 		weight = random.randrange(100) #happiness(combination) # random.random()
 		n = Node(combination, weight )		
 		nodes.append(n)
 	random.shuffle(nodes)
-	nodes = nodes[:len(nodes)/2]
+	nodes = nodes[:len(nodes)/2]"""
 	
-
+	tp = CombinationCreator()
+	nodes = tp.combinations
+	
 	g = SetGraph()
 	g.generate(nodes)
 	g.render_image("output.png")
@@ -186,4 +205,7 @@ def generate_graph():
 	chandra.improve()
 	
 if __name__ == "__main__":
-	generate_graph()
+	
+	
+	import cProfile
+	cProfile.run('generate_graph()')
