@@ -225,12 +225,12 @@ def happiness(table):
 def generate_graph():
 	"""Generates a random graph using some combination tricks."""
 	
-	nodes = []
+	"""nodes = []
 	for combination in itertools.combinations('abcdef', r=K):
 		# Combination of abcdef of K letters.
 		weight = random.randrange(100) #happiness(combination) # random.random()
 		n = Node(combination, weight )		
-		nodes.append(n)
+		nodes.append(n)"""
 	
 	# ======== TO FASTEN THE PROCESS =========
 	#random.shuffle(nodes)
@@ -240,6 +240,12 @@ def generate_graph():
 	#nodes = tp.combinations
 	
 	#=========GENERATE GRAPH USING COMBINATIONS FOUND======
+	
+	n1 = Node(list("abc"), 99)
+	n2 = Node(list("ade"), 98)
+	n3 = Node(list("bfg"), 98)
+	n4 = Node(list("chi"), 98)
+	nodes=[n1,n2,n3,n4]
 	g = SetGraph()
 	g.generate(nodes)
 	g.render_image("output.png")
