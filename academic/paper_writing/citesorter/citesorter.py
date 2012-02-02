@@ -1,12 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-Sorts the citations that are unordered.
+CiteSorter: Sorts the citations that are unordered.
 Reqires two inputs:
 1. LaTeX bibitem list: newman2010, lamport94, erdos95
 2. Outputing number list: 3, 2, 1
 
 Outputs: erdos95, lamport94, newman2010
+
+
+Copyright (C) 2012 Ahmet Emre Aladağ
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 """
 import sys
 from PyQt4.QtGui import *
