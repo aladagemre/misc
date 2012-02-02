@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
+GUI for bibtex fetcher. You can search for a paper. Double click to see its bibtex. Click on save to append the bibtex to references.bib
+"""
 import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *

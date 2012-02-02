@@ -1,3 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+Searches for the given terms in Citeulike and returns the paper names and URLs for those papers.
+Also can return the bibtex value for a given paper URL.
+"""
+
 import urllib2
 
 def search(terms):
