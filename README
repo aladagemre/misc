@@ -1,1 +1,42 @@
 Here you can find misc programs for various purposes just for archiving purpose.
+
+- academic
+    - Data Mining: clustering, data to arff conversion
+    - Graphs: Dijkstra, Independent Sets
+    - Paper Writing: citation sorter, citeulike query/parse
+    - Presentations
+    - Statistics: Regression
+- desktop
+    - kiett: Qt IETT bus timetable app
+    - kixdelta: Qt GUI for running xdelta.
+- games
+    - beyzbol: baseball game with pygame
+    - fare: mouse animation with pygame
+    - turkrabble: a draft for scrabble with Qt
+    - xox: XOX game with Qt
+- justforfun
+    - hanoi: Hanoi towers with C, Java and Python
+    - sayisalstats: Sayısal loto lottery statistics generator
+    - siir: Python poem
+- os
+    - ddir/ddirfinder: Duplicate file detector
+    - kucultucu: Image resizer.
+    - pyorainstaller: Automatic oracle installer with Python
+    - flash64kviruscleaner: Searches for files of 64KB in a flash disk that could be a virus.
+    - yurtnet: Işık University dorm connection script
+- parser
+    - csvtomysql: Parses csv and generates CREATE TABLE, INSERT INTO statements for MySQL.
+- presentation
+    - linux: Linux presentation
+- school
+    - FractalGeometry: Fractal drawer with Java
+    - GameOfLife: Game of Life game with Java
+    - Java: sample codes for teaching Java
+    - OptimalBST: Optimal Binary Search Tree implementation with Python
+    - TurkBayragi: Turkish flag with Java
+    - image_pull_latex: Downloads an image from web, generates bibtex record for it.
+    - vhdlcg: VHDL code generator from a logic expression
+- visualization
+    - uyku: sleep time visualizer with Qt
+    - datatable: Data table visualization with Qt
+    - heatmap: Heatmap visualization with Qt
