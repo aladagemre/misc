@@ -14,6 +14,8 @@ Here you can find misc programs for various purposes just for archiving purpose.
     - fare: mouse animation with pygame
     - turkrabble: a draft for scrabble with Qt
     - xox: XOX game with Qt
+- giraph
+    - NumberofShortestPaths: draft codes finding number of shortest paths between nodes using Giraph.
 - justforfun
     - hanoi: Hanoi towers with C, Java and Python
     - sayisalstats: Sayısal loto lottery statistics generator
@@ -26,8 +28,6 @@ Here you can find misc programs for various purposes just for archiving purpose.
     - yurtnet: Işık University dorm connection script
 - parser
     - csvtomysql: Parses csv and generates CREATE TABLE, INSERT INTO statements for MySQL.
-- presentation
-    - linux: Linux presentation
 - school
     - FractalGeometry: Fractal drawer with Java
     - GameOfLife: Game of Life game with Java
@@ -36,7 +36,10 @@ Here you can find misc programs for various purposes just for archiving purpose.
     - TurkBayragi: Turkish flag with Java
     - image_pull_latex: Downloads an image from web, generates bibtex record for it.
     - vhdlcg: VHDL code generator from a logic expression
+- scripts
+    - noise_removal: Noise removal scripts to apply on mp4 videos.
 - visualization
     - uyku: sleep time visualizer with Qt
     - datatable: Data table visualization with Qt
     - heatmap: Heatmap visualization with Qt
+    - facebook-test: Visualize your facebook friendship network
