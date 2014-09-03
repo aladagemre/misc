@@ -4,3 +4,5 @@ Bu program, Java ile Türk bayrağı çizer. Bir okul projesi olarak hazırlanm�
 
 javac TurkBayragi.java
 java TurkBayragi
+
+![Ekran Görüntüsü](https://github.com/aladagemre/misc/blob/master/school/TurkBayragi/Turkbayragi.png)
