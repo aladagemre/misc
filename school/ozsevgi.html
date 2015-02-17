@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="tr" lang="tr">
+<head>
+<title>Kendinizi ne kadar seviyorsunuz?</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<script type="text/javascript" >
+function degerlendir(){
+
+	toplam = 0
+	for (i=1; i<=30; i++){
+		soru_str = "soru" + i;
+		deger = degeral(soru_str);
+		toplam += deger;
+	}
+	yorum = yorumyap(toplam);	
+	alert("Toplam puan:" + toplam + "\n" + yorum);
+	
+}
+
+
+function yorumyap(puan){	
+	if (puan > 105){
+		message = "Biraz şakaya vurdunuz!"
+	}
+	else if (puan >= 96){
+		message = "Kendiniz hakkında oldukça olmlu düşünen bir kimsesiniz"
+	}
+	else if (puan >= 72){
+		message = "Kendini seven ve kendisiyle barış içinde yaşayan şanslı insanlardan birisiniz."
+	}
+	else if (puan >= 48){
+		message = "Kendinizle ilgili karışık duygularınız var.Bazı güçlü yönlerinizin farkındasınız."+
+"Ancak zayıf yönlerinizi gözönünde daha çok abartıyor olabilirsiniz.Büyük bir olasılıkla, bu hatalı yönlerinizi pasif bir biçimde kabullenip kendinizi geliştirmek"+
+"için pek çaba harcamıyorsunuz.";
+	}
+	else{
+		message = "Kendinizi pek seven insan değilsiniz."
+	}
+
+	return message;
+
+}
+
+function degeral(radio_adi) {
+	var radio = document.forms[0].elements[radio_adi];
+	for(var i = 0; i < radio.length; i++) {
+		if(radio[i].checked) {
+			return i+1;
+		}	
+	}	
+	return 0;
+}
+
+
+</script>
+
+<style type="text/css">
+h1,p {
+	color: #6D929B;
+	}
+th {
+	font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica,
+	sans-serif;
+	color: #6D929B;
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-top: 1px solid #C1DAD7;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-align: center;
+	padding: 6px 6px 6px 12px;
+	background: #CAE8EA;
+}
+td {
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	background: #fff;
+	padding: 6px 6px 6px 12px;
+	color: #6D929B;
+}
+</style>
+</head>
+<body>
+<h1>Kendinizi ne kadar seviyorsunuz?</h1>
+<p>Aşağıdaki ifadelere verdiğiniz yanıtları değerlendirerek kendi kendinize ne ölçüde iyi ilşkiler içinde olduğuynuzu saptayabilirsiniz. Her ifadenin yanında
+sizin değerlendirmenizi belli eden seçeneği seçiniz.</p>
+<p>1:Eğer ifade hiç doğru değilse<br/>
+2:Eğer ifade kısmen doğru ise<br/>
+3:Eğer ifade çoğunlukla doğru ise<br/>
+4:Eğer ifade tümüyle doğru ise
+</p>
+
+<form action="" onsubmit="degerlendir()" method="post">
+<table summary="" border="0">
+<tr><th>#</th><th>1</th><th>2</th><th>3</th><th>4</th><th style="text-align:left">Soru</th></tr>
+<tr><td>1)</td> <td><input type="radio" name="soru1"/></td><td><input type="radio" name="soru1"/></td><td><input type="radio" name="soru1"/></td><td><input type="radio" name="soru1"/></td><td>Sabahleyin neşeli bir şekilde uyanırım.</td></tr>
+
+<tr><td>2)</td> <td><input type="radio" name="soru2"/></td><td><input type="radio" name="soru2"/></td><td><input type="radio" name="soru2"/></td><td><input type="radio" name="soru2"/></td><td>Çoğunlukla neşem yerindedir.</td></tr>
+
+<tr><td>3)</td> <td><input type="radio" name="soru3"/></td><td><input type="radio" name="soru3"/></td><td><input type="radio" name="soru3"/></td><td><input type="radio" name="soru3"/></td><td>Çoğu kimse tarafından sevilirim.</td></tr>
+
+<tr><td>4)</td> <td><input type="radio" name="soru4"/></td><td><input type="radio" name="soru4"/></td><td><input type="radio" name="soru4"/></td><td><input type="radio" name="soru4"/></td><td>Aynaya baktığım zaman aynada gördüklerim hoşuma gider.</td></tr>
+
+<tr><td>5)</td> <td><input type="radio" name="soru5"/></td><td><input type="radio" name="soru5"/></td><td><input type="radio" name="soru5"/></td><td><input type="radio" name="soru5"/></td><td>Eğer karşı cinste biri olsaydım kendimi çekici bulurdum.</td></tr>
+
+<tr><td>6)</td> <td><input type="radio" name="soru6"/></td><td><input type="radio" name="soru6"/></td><td><input type="radio" name="soru6"/></td><td><input type="radio" name="soru6"/></td><td>Zeki bir insanım.</td></tr>
+
+<tr><td>7)</td> <td><input type="radio" name="soru7"/></td><td><input type="radio" name="soru7"/></td><td><input type="radio" name="soru7"/></td><td><input type="radio" name="soru7"/></td><td>İşimden hoşlanırım.</td></tr>
+
+<tr><td>8)</td> <td><input type="radio" name="soru8"/></td><td><input type="radio" name="soru8"/></td><td><input type="radio" name="soru8"/></td><td><input type="radio" name="soru8"/></td><td>Kendimle ilgili utanılacak pek bir şey göremiyorum.</td></tr>
+
+<tr><td>9)</td> <td><input type="radio" name="soru9"/></td><td><input type="radio" name="soru9"/></td><td><input type="radio" name="soru9"/></td><td><input type="radio" name="soru9"/></td><td>Arkadaşlarımın sayısı yönünden içim rahat.</td></tr>
+
+<tr><td>10)</td> <td><input type="radio" name="soru10"/></td><td><input type="radio" name="soru10"/></td><td><input type="radio" name="soru10"/></td><td><input type="radio" name="soru10"/></td><td>Oldukça enerjik bir insanım.</td></tr>
+
+<tr><td>11)</td> <td><input type="radio" name="soru11"/></td><td><input type="radio" name="soru11"/></td><td><input type="radio" name="soru11"/></td><td><input type="radio" name="soru11"/></td><td>Esas olarak iyimser bir kişiyim.</td></tr>
+
+<tr><td>12)</td> <td><input type="radio" name="soru12"/></td><td><input type="radio" name="soru12"/></td><td><input type="radio" name="soru12"/></td><td><input type="radio" name="soru12"/></td><td>Kendi hatalarıma gülebilirim.</td></tr>
+
+<tr><td>13)</td> <td><input type="radio" name="soru13"/></td><td><input type="radio" name="soru13"/></td><td><input type="radio" name="soru13"/></td><td><input type="radio" name="soru13"/></td><td>Eğer yaşama yeniden başlama olanağım olsaydı,değiştirmek istediğim pek bir şey olmazdı.</td></tr>
+
+<tr><td>14)</td> <td><input type="radio" name="soru14"/></td><td><input type="radio" name="soru14"/></td><td><input type="radio" name="soru14"/></td><td><input type="radio" name="soru14"/></td><td>Ben ilginç bir insanım.</td></tr>
+
+<tr><td>15)</td> <td><input type="radio" name="soru15"/></td><td><input type="radio" name="soru15"/></td><td><input type="radio" name="soru15"/></td><td><input type="radio" name="soru15"/></td><td>Aşk yaşamımdan memnunum.</td></tr>
+
+<tr><td>16)</td> <td><input type="radio" name="soru16"/></td><td><input type="radio" name="soru16"/></td><td><input type="radio" name="soru16"/></td><td><input type="radio" name="soru16"/></td><td>Hala değişen ve gelişen bir insanım.</td></tr>
+
+<tr><td>17)</td> <td><input type="radio" name="soru17"/></td><td><input type="radio" name="soru17"/></td><td><input type="radio" name="soru17"/></td><td><input type="radio" name="soru17"/></td><td>Başkaları bana önem verir.</td></tr>
+
+<tr><td>18)</td> <td><input type="radio" name="soru18"/></td><td><input type="radio" name="soru18"/></td><td><input type="radio" name="soru18"/></td><td><input type="radio" name="soru18"/></td><td>Bana benzer başka insan pek bulunmaz.</td></tr>
+
+<tr><td>19)</td> <td><input type="radio" name="soru19"/></td><td><input type="radio" name="soru19"/></td><td><input type="radio" name="soru19"/></td><td><input type="radio" name="soru19"/></td><td>Görünüşümle ilgili olarak değiştirmek istediğim pek birşey yok.</td></tr>
+
+<tr><td>20)</td> <td><input type="radio" name="soru20"/></td><td><input type="radio" name="soru20"/></td><td><input type="radio" name="soru20"/></td><td><input type="radio" name="soru20"/></td><td>Ben duyarlı bir insanım.</td></tr>
+
+<tr><td>21)</td> <td><input type="radio" name="soru21"/></td><td><input type="radio" name="soru21"/></td><td><input type="radio" name="soru21"/></td><td><input type="radio" name="soru21"/></td><td>Şimdiye kadar paylaştıklarımdan pişman değilim.</td></tr>
+
+<tr><td>22)</td> <td><input type="radio" name="soru22"/></td><td><input type="radio" name="soru22"/></td><td><input type="radio" name="soru22"/></td><td><input type="radio" name="soru22"/></td><td>Önem verdiğim kişiler benim kanılarımla,düşüncelerimle ilgilenirler.</td></tr>
+
+<tr><td>23)</td> <td><input type="radio" name="soru23"/></td><td><input type="radio" name="soru23"/></td><td><input type="radio" name="soru23"/></td><td><input type="radio" name="soru23"/></td><td>Duygularımı açıklamaktan çekinmem.</td></tr>
+
+<tr><td>24)</td> <td><input type="radio" name="soru24"/></td><td><input type="radio" name="soru24"/></td><td><input type="radio" name="soru24"/></td><td><input type="radio" name="soru24"/></td><td>Gerçekten bir cennet varsa, öldükten sonra ben oraya giderim.</td></tr>
+
+<tr><td>25)</td> <td><input type="radio" name="soru25"/></td><td><input type="radio" name="soru25"/></td><td><input type="radio" name="soru25"/></td><td><input type="radio" name="soru25"/></td><td>Başkalarıyla konuşurken rahatım.</td></tr>
+
+<tr><td>26)</td> <td><input type="radio" name="soru26"/></td><td><input type="radio" name="soru26"/></td><td><input type="radio" name="soru26"/></td><td><input type="radio" name="soru26"/></td><td>Yaşamımı istediğim yöne çevirebilirim.</td></tr>
+
+<tr><td>27)</td> <td><input type="radio" name="soru27"/></td><td><input type="radio" name="soru27"/></td><td><input type="radio" name="soru27"/></td><td><input type="radio" name="soru27"/></td><td>Yerlernde olmak istediğim,gıpta ile baktığım pek çok kimse yok.</td></tr>
+
+<tr><td>28)</td> <td><input type="radio" name="soru28"/></td><td><input type="radio" name="soru28"/></td><td><input type="radio" name="soru28"/></td><td><input type="radio" name="soru28"/></td><td>Oldukça ilginç bir yaşam sürdüm.</td></tr>
+
+<tr><td>29)</td> <td><input type="radio" name="soru29"/></td><td><input type="radio" name="soru29"/></td><td><input type="radio" name="soru29"/></td><td><input type="radio" name="soru29"/></td><td>Ben her türlü iyilik ve ödüle değer veririm.</td></tr>
+
+<tr><td>30)</td> <td><input type="radio" name="soru30"/></td><td><input type="radio" name="soru30"/></td><td><input type="radio" name="soru30"/></td><td><input type="radio" name="soru30"/></td><td>Yaşamımda şu anda bulunduğum noktada olmaktan memnunum.</td></tr>
+
+</table>
+<input type="submit" value="Değerlendir"/>
+</form>
+</body>
+</html>

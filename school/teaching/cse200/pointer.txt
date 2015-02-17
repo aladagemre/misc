@@ -1,0 +1,115 @@
+POINTERLAR
+
+Pointer, otel danýþmadaki kim hangi odada kalýyor listesindeki oda numaralarýný yazdýðýmýz kutular gibidir.
+
+Bu kutunun içine bakarsýn, ulaþmak istediðin adamýn oda numarasýný öðrenir, ona göre gidersin. Ýleride bir gün
+geldiðinde tekrar listeye bakarsýn, adamýn oda numarasýnýn deðiþtiðini görüp ona göre yeni odaya gidebilirsin mesela.
+Eðer bu sürekli deðiþen liste olmasaydý adamý kurþuna dizmek için eski odasýna gittiðinde farklý birisiyle karþýlaþýp yanlýþlýkla
+onu vurabilirdin! Bu da malfunction denilen yanlýþ çalýþmaya sebep olabilirdi. Veya, orada adamý bulamayýp sapýtabilirdin.
+
+Tüm bu kötü durumlarý engellemek, dinamik bir eriþim saðlamak için pointer kullanýyoruz. 
+
+Pointerýn, bir içeriði var. Biz bu içerikle ilgileniyoruz. Bu içerik ise bir adres. 
+
+Diyelim ki
+int aPtr; diye bir pointer var ve bunun içinde A394DE yazyýyor(salladým). 
+Biz, bu adresteki sayýnýn deðerine ulaþmak için pointerin adýnýn baþýna * koyuyoruz.
+yani
+printf("%d",*aPtr); dediðimizde aPtr'in iþaret ettiði sayýnýn deðerini bastýrmýþ oluyoruz. Mesela 18 olsun...
+
+Peki bu pointerin içeriðindeki adresi nasýl belirleyebiliriz? Bunun için & iþaretini kullanacaðýz.
+
+int sayi=18;
+aPtr=&sayi;
+
+Aþaðýdaki ifadelerin ikisi de 18 bastýrýr.
+printf("%d",*aPtr);
+printf("%d",sayi);
+
+
+Aþaðýdaki ifadelerin ikisi de A394DE (sayi'nýn adresini) bastýrýr.
+printf("%p",aPtr);
+printf("%p",&sayi);
+
+-----------
+
+Þimdi de biraz stringlere geçelim.
+Stringler ise karakter dizi(array)leridir. Arrayler ise ayný zamanda bir pointer gibi davranýr. 
+
+Mesela,
+char kelime[30];
+
+Burada
+kelime ifadesi bu dizinin ilk elemanýnýn adresini söyler bize.
+kelime+1 ifadesi ikinci elemanýn adresini
+kelime+2 ifadesi üçüncü elemanýn adresini...
+
+O halde, adresleri biliyorsak, bunlarýn deðerlerini nasýl okuyabiliriz? * ile tabii ki!
+
+*kelime => kelimenin ikinci elemanýndaki adresteki harfin deðerini, mesela 'A' verir.
+*(kelime+1) => kelimenin ikinci elemanýndaki adresteki harfin deðerini verir. Mesela 'h'
+
+Örn:
+for (i=0;i<5;i++)
+	printf("%c",*(kelime+i));
+
+dersek, bu yazýnýn ilk 5 harfini (0,1,2,3,4) bastýrmýþ oluruz.
+
+Bir de, eðer bu kelimenin tamamýný bastýrmak istersek, 
+puts(kelime); diyebiliriz. puts fonksiyonu, stringi okumaya baþlar. '\0', yani sonlandýrýcý(terminating) karakteri
+görene kadar okur, gördüðü zaman okumayý býrakýr. 
+Bildiðimiz üzere stringlerin nerede bittiðini tespit etmek için son elemanýný '\0' yapýyorduk.
+char cumle[10];
+for (i=0;i<6;i++)
+	*(cumle+i)='A'+i;
+*(cumle+i)='\0';
+
+Bu program parçasý, cumle stringine yazmaya baþlar.
+0. elemana A yazar.
+1. elemana B
+2. elemana C
+...	   D
+	   E
+5. elemana F
+
+For bittikten sonra da, i 6 idi.(zaten 6 olduðu için for devam etmedi).  *(cumle+i)='\0' ile de
+6. elemana \0 yazdýk. Böylece stringi okunabilir hale getirdik.
+
+puts(cumle) dediðimizde 6. elemana gelince okuma sona eriyor. Normalde 10 tane hafýzasý olmasýna raðmen '\0'yý görünce devam etmiyor.
+
+Bir de karýþtýrma örneði yapalým:
+
+#include <stdio.h>
+#include <time.h>
+int main(){
+	
+	char cumle[10]="ABCDEFGHI";
+	int i,rastgelesira;
+	char gecici;
+	srand(time(NULL));
+
+	for (i=0;i<9;i++){ //9. indisteki (10.) eleman '\0' olduðu için onu hesaba katmadým
+		rastgelesira=rand()%9; //9'dan kucuk bir sayi olusturuyor
+		
+		gecici=cumle[i];
+		cumle[i]=cumle[rastgelesira];
+		cumle[rastgelesira]=gecici;
+
+
+}	
+	puts(cumle);
+
+	return 0;
+}
+i
+
+Bu kod, "ABCDEFGHI" cümlesinin harflerini karýyor. Bu iþi de þöyle yapýyor:
+* 9'dan küçük, indis olarak kabul edebileceðimiz rastgele bir sayý üret=rastgelesira.
+* i indisindeki harfi bu indisteki harfle deðiþtireceðiz.
+	- i indisindeki harfi gecici bir degiskene ata.
+	- i indisine rastegelesira indisindeki harfi yaz.
+	- rastgelesira indisine de gecici degiskeninde depoladigimiz i indisindeki eski harfi koy.
+* Bunu ilk harften son harfe kadar tekrarla (for ile)
+
+
+
